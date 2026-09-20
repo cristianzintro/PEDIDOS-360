@@ -1,0 +1,23 @@
+# Environment and secrets
+.env
+*.local
+
+# Java / Maven
+**/target/
+*.log
+.mvn/timing.properties
+
+# Angular / Node
+**/node_modules/
+**/dist/
+**/.angular/
+**/coverage/
+
+# IDE and operating system
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+database/Script.sql

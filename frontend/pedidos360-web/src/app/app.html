@@ -1,0 +1,34 @@
+<header class="site-header">
+  <a class="brand" routerLink="/" aria-label="Pedidos360 inicio">
+    <span class="brand-mark">P360</span>
+    <span>Pedidos360</span>
+  </a>
+
+  <nav aria-label="Navegacion principal">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+    @if (auth.isAuthenticated()) {
+      <a routerLink="/ots" routerLinkActive="active">Ordenes de trabajo</a>
+      @if (auth.hasRole('ADMIN')) {
+        <a routerLink="/audit" routerLinkActive="active">Auditoria</a>
+      }
+    }
+  </nav>
+
+  <div class="session-actions">
+    @if (auth.isAuthenticated()) {
+      <span class="user-name">{{ auth.displayName() }}</span>
+      <button class="button button-quiet" type="button" (click)="auth.logout()">Salir</button>
+    } @else {
+      <a class="button button-primary" routerLink="/login">Ingresar</a>
+    }
+  </div>
+</header>
+
+<main>
+  <router-outlet />
+</main>
+
+<footer>
+  <span>DSY1107 Desarrollo Cloud Native I</span>
+  <span>Angular + Entra ID + Spring Boot</span>
+</footer>

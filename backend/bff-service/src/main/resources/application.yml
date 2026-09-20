@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: bff-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI:https://login.microsoftonline.com/YOUR_TENANT_ID/v2.0}
+          jwk-set-uri: ${JWK_SET_URI:https://login.microsoftonline.com/YOUR_TENANT_ID/discovery/v2.0/keys}
+
+security:
+  oauth2:
+    audience: ${API_AUDIENCE:YOUR_API_AUDIENCE}
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:4200}
+
+services:
+  ot:
+    url: ${OT_SERVICE_URL:http://localhost:8081}
+  audit:
+    url: ${AUDIT_SERVICE_URL:http://localhost:8082}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
