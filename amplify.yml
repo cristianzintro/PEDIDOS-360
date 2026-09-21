@@ -1,0 +1,20 @@
+version: 1
+applications:
+  - appRoot: frontend/pedidos360-web
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - nvm install 22
+            - npm install --global npm@11.6.2
+            - npm ci
+        build:
+          commands:
+            - npm run build
+      artifacts:
+        baseDirectory: dist/pedidos360-web/browser
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
