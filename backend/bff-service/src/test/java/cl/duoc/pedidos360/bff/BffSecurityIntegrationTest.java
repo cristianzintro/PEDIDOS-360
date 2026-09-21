@@ -24,6 +24,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.ORIGIN;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -72,9 +73,25 @@ class BffSecurityIntegrationTest {
     }
 
     @Test
+    void shouldReturn401WithMalformedToken() throws Exception {
+        mockMvc.perform(get("/api/bff/ots")
+                        .header(AUTHORIZATION, "Bearer invalid-token"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.status").value(401));
+    }
+
+    @Test
     void shouldAllowAdminToReadOts() throws Exception {
         mockMvc.perform(get("/api/bff/ots").with(jwtWith("access_as_user", "ADMIN")))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldRejectAdminWhenGatewayStripsRequestPath() throws Exception {
+        mockMvc.perform(get("/").with(jwtWith("access_as_user", "ADMIN")))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.message").value("El usuario no tiene el rol requerido"))
+                .andExpect(jsonPath("$.path").value("/"));
     }
 
     @Test
