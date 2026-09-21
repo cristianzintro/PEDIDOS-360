@@ -1,0 +1,21 @@
+[Unit]
+Description=PEDIDOS-360 OT service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=pedidos360
+Group=pedidos360
+WorkingDirectory=/opt/pedidos360/backend/ot-service
+EnvironmentFile=/etc/pedidos360/ot.env
+Environment=SERVER_ADDRESS=127.0.0.1
+ExecStart=/usr/bin/java -jar /opt/pedidos360/backend/ot-service/target/ot-service-1.0.0-SNAPSHOT.jar
+Restart=on-failure
+RestartSec=5
+SuccessExitStatus=143
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
