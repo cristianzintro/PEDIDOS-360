@@ -59,15 +59,19 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/actuator/health", "/api/bff/health").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/bff/ots/**")
+                        .requestMatchers(HttpMethod.GET, "/api/bff/ots", "/api/bff/ots/**")
                         .access(userAccess)
-                        .requestMatchers(HttpMethod.HEAD, "/api/bff/ots/**")
+                        .requestMatchers(HttpMethod.HEAD, "/api/bff/ots", "/api/bff/ots/**")
                         .access(userAccess)
                         .requestMatchers(HttpMethod.POST, "/api/bff/ots", "/api/bff/ots/*/items")
                         .access(userAccess)
-                        .requestMatchers(HttpMethod.GET, "/api/bff/events/**", "/api/bff/notifications/**")
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/bff/events", "/api/bff/events/**",
+                                "/api/bff/notifications", "/api/bff/notifications/**")
                         .access(adminAccess)
-                        .requestMatchers(HttpMethod.HEAD, "/api/bff/events/**", "/api/bff/notifications/**")
+                        .requestMatchers(HttpMethod.HEAD,
+                                "/api/bff/events", "/api/bff/events/**",
+                                "/api/bff/notifications", "/api/bff/notifications/**")
                         .access(adminAccess)
                         .requestMatchers("/api/bff/me").hasAuthority("SCOPE_access_as_user")
                         .anyRequest().denyAll())
